@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section id="headerPlaceHolder" file-type="header" import-file-path="./layout/header.html">
+    </section>
+    
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+  /*also not work below Jquery C*/
+        //$("#headerPlaceHolder").load("./layout/header.html");
+  //layoutjs
+  //layout template html
+  (function (w) {
+
+
+
+    var importFileModule = function () {};
+    window.defaultImage = "../assets/images/placeholder.png";
+
+    importFileModule.constructor = importFileModule;
+    importFileModule.prototype = {
+      init: function () {
+        var z, i, elmnt, file, xhttp;
+        z = document.getElementsByTagName("*");
+        for (i = 0; i < z.length; i++) {
+          elmnt = z[i];
+          file = elmnt.getAttribute("import-file-path");
+          if (file) {
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+              if (this.readyState == 4) {
+                if (this.status == 200) {
+                  elmnt.innerHTML = this.responseText;
+                  console.log('import file success');
+                  console.log(this.responseText);
+                }
+                if (this.status == 404) {
+                  elmnt.innerHTML = "Page not found.";
+                }
+                elmnt.removeAttribute("import-file-path");
+                $importFileModule.init();
+              }
+            };
+            xhttp.open("GET", file, true);
+            xhttp.send();
+            return;
+          }
+        }
+      },
+    };
+    w.$importFileModule = new importFileModule();
+    $importFileModule.init();
+  })(window);
+
+
+});
+
+</script>
+</html>
